@@ -3,2176 +3,1380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aethercraft — Personal Space Vehicles</title>
+    <title>AETHERCRAFT — Your Name in the Stars</title>
+    <meta name="description" content="Aethercraft — Premium personal spacecraft. From compact explorers to colony-class vessels, engineering the impossible since 2041.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --void-black: #050510;
-            --panel-dark: #0d1117;
-            --titanium-gold: #c9a84c;
-            --hologram-cyan: #4ecdc4;
-            --text-primary: #f0f0f0;
-            --text-secondary: #8b949e;
-            --wireframe-blue: #58a6ff;
-            --font-serif: 'Instrument Serif', Georgia, serif;
-            --font-sans: 'DM Sans', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --void: #050508;
+            --void-light: #0a0a10;
+            --gold: #c8a96e;
+            --gold-dim: rgba(200, 169, 110, 0.4);
+            --ice: #4db8ff;
+            --off-white: #f5f5f0;
+            --muted: rgba(245,245,240,0.5);
+            --glass: rgba(10,10,15,0.85);
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
+            background: var(--void);
+            color: var(--off-white);
             font-family: var(--font-sans);
-            background: var(--void-black);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-weight: 300;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Navigation */
+        img { display: block; max-width: 100%; }
+
+        /* ─── NAVIGATION ─── */
         .nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
-            padding: 24px 48px;
+            padding: 1.5rem 4rem;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            transition: background 0.3s ease, padding 0.3s ease;
+            transition: background 0.4s ease, padding 0.4s ease;
         }
-
         .nav.scrolled {
-            background: rgba(5, 5, 16, 0.95);
+            background: rgba(5,5,8,0.95);
             backdrop-filter: blur(20px);
-            padding: 16px 48px;
+            padding: 1rem 4rem;
+            border-bottom: 1px solid rgba(200,169,110,0.1);
         }
-
         .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
             font-family: var(--font-serif);
-            font-size: 24px;
-            color: var(--text-primary);
+            font-size: 1.4rem;
+            letter-spacing: 0.4em;
+            color: var(--off-white);
             text-decoration: none;
+            font-weight: 400;
         }
-
-        .nav-logo svg {
-            width: 40px;
-            height: 40px;
-        }
-
         .nav-links {
             display: flex;
-            gap: 40px;
+            gap: 3rem;
             list-style: none;
         }
-
         .nav-links a {
-            color: var(--text-secondary);
+            color: var(--muted);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--titanium-gold);
-        }
-
-        .nav-cta {
-            padding: 12px 28px;
-            background: transparent;
-            border: 1px solid var(--titanium-gold);
-            color: var(--titanium-gold);
-            font-family: var(--font-sans);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            transition: color 0.3s;
         }
-
+        .nav-links a:hover { color: var(--gold); }
+        .nav-cta {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.7rem 1.6rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s;
+        }
         .nav-cta:hover {
-            background: var(--titanium-gold);
-            color: var(--void-black);
+            background: var(--gold);
+            color: var(--void);
         }
-
-        .nav-mobile-toggle {
+        .hamburger {
             display: none;
-            background: none;
-            border: none;
+            flex-direction: column;
+            gap: 5px;
             cursor: pointer;
-            padding: 8px;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 24px; height: 1px;
+            background: var(--off-white);
+            transition: all 0.3s;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--void);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--off-white);
+            text-decoration: none;
+            letter-spacing: 0.2em;
         }
 
-        .nav-mobile-toggle svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--text-primary);
-        }
-
-        /* Hero Section */
+        /* ─── HERO ─── */
         .hero {
             position: relative;
             height: 100vh;
-            min-height: 700px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
-
-        #starfield {
+        .hero-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            inset: 0;
+            background: url('file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---37c71a29-b067-4516-a3ba-fd86df359014.png') center/cover no-repeat;
+            animation: kenBurns 15s ease-in-out infinite alternate;
         }
-
+        @keyframes kenBurns {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5,5,8,0.85) 0%, rgba(5,5,8,0.3) 60%, rgba(5,5,8,0.2) 100%);
+        }
         .hero-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             text-align: center;
-            padding: 0 24px;
         }
-
-        .hero-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 40px;
-            opacity: 0;
-            animation: logoReveal 2s ease-out 0.5s forwards;
-        }
-
-        .hero-logo svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .hero-logo .logo-stroke {
-            stroke-dasharray: 400;
-            stroke-dashoffset: 400;
-            animation: strokeReveal 2s ease-out 0.5s forwards;
-        }
-
-        @keyframes strokeReveal {
-            to { stroke-dashoffset: 0; }
-        }
-
-        @keyframes logoReveal {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .hero-tagline {
+        .hero-title {
             font-family: var(--font-serif);
-            font-size: clamp(32px, 6vw, 72px);
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 1s forwards;
+            font-size: 8vw;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            line-height: 1;
+            margin-bottom: 1.5rem;
         }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-bottom: 60px;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 1.3s forwards;
+        .hero-sub {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 2vw;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 3rem;
         }
-
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 48px;
-            background: var(--titanium-gold);
-            color: var(--void-black);
-            font-family: var(--font-sans);
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: var(--gold);
+            color: var(--void);
             text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 1.6s forwards;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
         }
-
-        .hero-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 60px rgba(201, 168, 76, 0.3);
+        .btn-primary:hover { opacity: 0.85; }
+        .btn-ghost {
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--off-white);
+            color: var(--off-white);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
         }
-
-        .hero-cta svg {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.3s ease;
+        .btn-ghost:hover {
+            background: var(--off-white);
+            color: var(--void);
         }
-
-        .hero-cta:hover svg {
-            transform: translateX(4px);
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 3rem;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 2s forwards;
+            gap: 0.5rem;
         }
-
-        .scroll-indicator .line {
+        .scroll-indicator span {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .scroll-line {
             width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, var(--titanium-gold), transparent);
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
             animation: scrollPulse 2s ease-in-out infinite;
         }
-
         @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+            50% { opacity: 1; transform: scaleY(1); }
         }
 
-        /* Section Styles */
-        .section {
-            padding: 120px 48px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
+        /* ─── SECTION COMMON ─── */
+        section { padding: 8rem 0; }
         .section-label {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--hologram-cyan);
-            letter-spacing: 3px;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            color: var(--gold);
+            margin-bottom: 1rem;
         }
-
         .section-title {
             font-family: var(--font-serif);
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 400;
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .gold-underline {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 1.5rem 0;
         }
 
-        .section-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Ship Lineup */
-        .ship-lineup {
-            padding: 120px 0;
-        }
-
-        .ship-card {
+        /* ─── SHIP LINEUP ─── */
+        .ship-section {
             position: relative;
-            min-height: 600px;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 80px 48px;
-            margin-bottom: 40px;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .ship-section:nth-child(even) .ship-card { flex-direction: row-reverse; }
+        .ship-card {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+        .ship-image-wrap {
+            flex: 0 0 55%;
+            overflow: hidden;
+            position: relative;
+        }
+        .ship-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        .ship-section:hover .ship-image-wrap img { transform: scale(1.05); }
+        .ship-text {
+            flex: 0 0 45%;
+            display: flex;
+            align-items: center;
+            padding: 4rem 5rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+        }
+        .ship-name {
+            font-family: var(--font-serif);
+            font-size: 4.5vw;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+        .ship-tagline {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        .ship-price {
+            font-family: var(--font-serif);
+            font-size: 2vw;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--gold-dim);
+            padding: 1.5rem;
+        }
+        .spec-item { padding: 0.5rem 0; }
+        .spec-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+        .spec-value {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--off-white);
+        }
+        .btn-outline {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
+        }
+        .btn-outline:hover {
+            background: var(--gold);
+            color: var(--void);
         }
 
-        .ship-card.visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* ─── TECHNOLOGY ─── */
+        .tech-section {
+            padding: 10rem 4rem;
+            background: var(--void-light);
+            position: relative;
+            overflow: hidden;
         }
-
-        .ship-card-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--panel-dark) 0%, var(--void-black) 100%);
-            z-index: 0;
-        }
-
-        .ship-card-bg::before {
+        .tech-section::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse at 30% 50%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 50%, rgba(201, 168, 76, 0.06) 0%, transparent 50%);
-        }
-
-        .ship-card-grid {
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            z-index: 1;
+            pointer-events: none;
         }
-
-        .ship-card-content {
-            position: relative;
-            z-index: 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-            align-items: center;
-        }
-
-        .ship-card:nth-child(even) .ship-card-content {
-            direction: rtl;
-        }
-
-        .ship-card:nth-child(even) .ship-card-content > * {
-            direction: ltr;
-        }
-
-        .ship-visual {
-            position: relative;
-            height: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ship-silhouette {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .ship-silhouette svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 0 40px rgba(78, 205, 196, 0.2));
-            transition: filter 0.3s ease;
-        }
-
-        .ship-card:hover .ship-silhouette svg {
-            filter: drop-shadow(0 0 60px rgba(78, 205, 196, 0.4));
-        }
-
-        .ship-info {
-            padding: 40px 0;
-        }
-
-        .ship-tagline {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--hologram-cyan);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .ship-name {
-            font-family: var(--font-serif);
-            font-size: clamp(40px, 5vw, 64px);
-            font-weight: 400;
-            margin-bottom: 8px;
-            line-height: 1.1;
-        }
-
-        .ship-type {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-
-        .ship-price {
-            font-family: var(--font-mono);
-            font-size: 28px;
-            color: var(--titanium-gold);
-            margin-bottom: 40px;
-        }
-
-        .ship-price span {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        .ship-specs {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .spec-pill {
-            position: relative;
-            padding: 16px 20px;
-            background: rgba(13, 17, 23, 0.8);
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            font-family: var(--font-mono);
-            font-size: 13px;
-        }
-
-        .spec-pill::before,
-        .spec-pill::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border: 1px solid var(--wireframe-blue);
-        }
-
-        .spec-pill::before {
-            top: -1px;
-            left: -1px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .spec-pill::after {
-            bottom: -1px;
-            right: -1px;
-            border-left: none;
-            border-top: none;
-        }
-
-        .spec-label {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .spec-value {
-            color: var(--text-primary);
-        }
-
-        .ship-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 36px;
-            background: transparent;
-            border: 1px solid var(--titanium-gold);
-            color: var(--titanium-gold);
-            font-family: var(--font-sans);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ship-cta:hover {
-            background: var(--titanium-gold);
-            color: var(--void-black);
-        }
-
-        .ship-cta svg {
-            width: 16px;
-            height: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .ship-cta:hover svg {
-            transform: translateX(4px);
-        }
-
-        /* Technology Section */
-        .tech-section {
-            background: var(--panel-dark);
-            padding: 120px 48px;
-        }
-
-        .tech-grid {
+        .tech-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .tech-header { text-align: center; margin-bottom: 6rem; }
+        .tech-pillars {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 4rem;
         }
-
-        .tech-pillar {
-            position: relative;
-            padding: 48px 40px;
-            background: var(--void-black);
-            border: 1px solid rgba(88, 166, 255, 0.1);
-            text-align: center;
-            transition: all 0.4s ease;
-            overflow: hidden;
-        }
-
-        .tech-pillar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--hologram-cyan), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .tech-pillar:hover {
-            transform: translateY(-8px);
-            border-color: rgba(78, 205, 196, 0.3);
-        }
-
-        .tech-pillar:hover::before {
-            opacity: 1;
-        }
-
-        .tech-icon {
+        .pillar { text-align: center; }
+        .pillar-icon {
             width: 64px;
             height: 64px;
-            margin: 0 auto 24px;
-            color: var(--hologram-cyan);
+            margin: 0 auto 2rem;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1;
         }
-
-        .tech-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .tech-title {
+        .pillar-title {
             font-family: var(--font-serif);
-            font-size: 28px;
-            margin-bottom: 16px;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        .pillar-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.8;
         }
 
-        .tech-description {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 24px;
-        }
-
-        .tech-detail {
-            font-size: 13px;
-            color: var(--text-secondary);
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .tech-pillar:hover .tech-detail {
-            opacity: 1;
-            max-height: 200px;
-        }
-
-        /* Configure Section */
+        /* ─── CONFIGURE ─── */
         .configure-section {
-            padding: 120px 48px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 8rem 4rem;
+            background: var(--void);
         }
-
-        .configure-container {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 60px;
-            margin-top: 60px;
+        .configure-inner { max-width: 1100px; margin: 0 auto; }
+        .config-steps { display: grid; gap: 4rem; margin-bottom: 4rem; }
+        .config-step-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
         }
-
-        .configure-tabs {
+        .ship-selector {
             display: flex;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-dim) transparent;
         }
-
-        .configure-tab {
-            padding: 12px 24px;
-            background: transparent;
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            color: var(--text-secondary);
-            font-family: var(--font-sans);
-            font-size: 14px;
+        .ship-option {
+            flex: 0 0 200px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(200,169,110,0.2);
+            transition: border-color 0.3s;
+            overflow: hidden;
         }
-
-        .configure-tab:hover {
-            border-color: var(--hologram-cyan);
-            color: var(--text-primary);
+        .ship-option.selected { border-color: var(--gold); }
+        .ship-option img { width: 100%; height: 120px; object-fit: cover; }
+        .ship-option-name {
+            padding: 0.75rem;
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            letter-spacing: 0.1em;
         }
-
-        .configure-tab.active {
-            background: var(--hologram-cyan);
-            border-color: var(--hologram-cyan);
-            color: var(--void-black);
-            font-weight: 600;
+        .color-swatches {
+            display: flex;
+            gap: 1rem;
         }
-
-        .configure-preview {
-            position: relative;
-            height: 300px;
-            background: var(--panel-dark);
-            border: 1px solid rgba(88, 166, 255, 0.1);
-            margin-bottom: 40px;
+        .swatch {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .swatch.selected { border-color: var(--gold); transform: scale(1.15); }
+        .swatch-obsidian { background: #1a1a1f; }
+        .swatch-titanium { background: #9ca3af; }
+        .swatch-nebula { background: #3b82f6; }
+        .swatch-solar { background: #c8a96e; }
+        .interior-packages {
+            display: flex;
+            gap: 1rem;
+        }
+        .pkg-card {
+            flex: 1;
+            padding: 1.5rem;
+            border: 1px solid rgba(200,169,110,0.2);
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .pkg-card.selected {
+            border-color: var(--gold);
+            background: rgba(200,169,110,0.05);
+        }
+        .pkg-name {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .pkg-price {
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+        .addon-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .addon-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border: 1px solid rgba(200,169,110,0.15);
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .addon-item.selected { border-color: var(--gold); }
+        .addon-checkbox {
+            width: 18px; height: 18px;
+            border: 1px solid var(--gold-dim);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            flex-shrink: 0;
+            transition: background 0.3s;
         }
-
-        .configure-preview svg {
-            width: 80%;
-            height: 80%;
-            opacity: 0.8;
-        }
-
-        .configure-preview::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to top, var(--panel-dark), transparent);
-        }
-
-        .configure-options h3 {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--hologram-cyan);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .color-options {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .color-swatch {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .color-swatch::after {
-            content: '';
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        .color-swatch:hover::after,
-        .color-swatch.selected::after {
-            border-color: var(--hologram-cyan);
-        }
-
-        .color-swatch.void { background: linear-gradient(135deg, #0a0a14, #050510); }
-        .color-swatch.titanium { background: linear-gradient(135deg, #8a8a8a, #4a4a4a); }
-        .color-swatch.gold { background: linear-gradient(135deg, #c9a84c, #9a7a2c); }
-        .color-swatch.cyan { background: linear-gradient(135deg, #4ecdc4, #2a9d8f); }
-
-        .package-options {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .package-option {
-            padding: 20px 24px;
-            background: var(--panel-dark);
-            border: 1px solid rgba(88, 166, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .package-option:hover {
-            border-color: var(--wireframe-blue);
-        }
-
-        .package-option.selected {
-            border-color: var(--titanium-gold);
-            background: rgba(201, 168, 76, 0.05);
-        }
-
-        .package-option input {
-            display: none;
-        }
-
-        .package-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .package-radio {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--text-secondary);
-            border-radius: 50%;
-            position: relative;
-            transition: border-color 0.3s ease;
-        }
-
-        .package-option.selected .package-radio {
-            border-color: var(--titanium-gold);
-        }
-
-        .package-option.selected .package-radio::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            background: var(--titanium-gold);
-            border-radius: 50%;
-        }
-
-        .package-name {
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .package-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .package-price {
-            font-family: var(--font-mono);
-            color: var(--titanium-gold);
-        }
-
-        .addon-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-
-        .addon-option {
-            padding: 16px 20px;
-            background: var(--panel-dark);
-            border: 1px solid rgba(88, 166, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .addon-option:hover {
-            border-color: var(--wireframe-blue);
-        }
-
-        .addon-option.selected {
-            border-color: var(--hologram-cyan);
-            background: rgba(78, 205, 196, 0.05);
-        }
-
-        .addon-option input {
-            display: none;
-        }
-
-        .addon-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .addon-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--text-secondary);
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .addon-option.selected .addon-checkbox {
-            border-color: var(--hologram-cyan);
-            background: var(--hologram-cyan);
-        }
-
-        .addon-option.selected .addon-checkbox::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 5px;
-            height: 10px;
-            border: solid var(--void-black);
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        .addon-name {
-            font-size: 14px;
-        }
-
-        .addon-price {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--hologram-cyan);
-        }
-
-        .configure-summary {
+        .addon-item.selected .addon-checkbox { background: var(--gold); }
+        .addon-checkbox svg { opacity: 0; transition: opacity 0.2s; }
+        .addon-item.selected .addon-checkbox svg { opacity: 1; }
+        .addon-info { flex: 1; }
+        .addon-name { font-size: 0.85rem; }
+        .addon-price { font-size: 0.75rem; color: var(--gold); margin-top: 0.2rem; }
+        .config-summary {
             position: sticky;
-            top: 100px;
-            padding: 40px;
-            background: var(--panel-dark);
-            border: 1px solid rgba(201, 168, 76, 0.2);
+            top: 6rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(200,169,110,0.2);
+            padding: 2rem;
         }
-
         .summary-title {
             font-family: var(--font-serif);
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
         }
-
-        .summary-ship {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid rgba(88, 166, 255, 0.1);
-        }
-
         .summary-line {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 14px;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(200,169,110,0.1);
+            font-size: 0.85rem;
         }
-
-        .summary-line .label {
-            color: var(--text-secondary);
-        }
-
-        .summary-line .value {
-            font-family: var(--font-mono);
-        }
-
+        .summary-line span:first-child { color: var(--muted); }
         .summary-total {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(201, 168, 76, 0.3);
+            padding: 1.2rem 0 2rem;
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--gold);
         }
-
-        .summary-total .label {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .summary-total .value {
-            font-family: var(--font-mono);
-            font-size: 32px;
-            color: var(--titanium-gold);
-        }
-
-        .summary-cta {
+        .btn-request {
             width: 100%;
-            margin-top: 32px;
-            padding: 18px;
-            background: var(--titanium-gold);
+            padding: 1rem;
+            background: var(--gold);
+            color: var(--void);
             border: none;
-            color: var(--void-black);
             font-family: var(--font-sans);
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s;
         }
+        .btn-request:hover { opacity: 0.85; }
 
-        .summary-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(201, 168, 76, 0.3);
-        }
-
-        /* Heritage Section */
+        /* ─── HERITAGE ─── */
         .heritage-section {
-            padding: 120px 48px;
-            background: var(--panel-dark);
-        }
-
-        .heritage-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
-        }
-
-        .heritage-story h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(36px, 4vw, 48px);
-            margin-bottom: 32px;
-            line-height: 1.2;
-        }
-
-        .heritage-story p {
-            color: var(--text-secondary);
-            font-size: 17px;
-            line-height: 1.8;
-            margin-bottom: 24px;
-        }
-
-        .heritage-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
-        }
-
-        .heritage-stat {
-            padding: 32px;
-            background: var(--void-black);
-            border: 1px solid rgba(88, 166, 255, 0.1);
-            text-align: center;
-        }
-
-        .heritage-stat-value {
-            font-family: var(--font-mono);
-            font-size: 48px;
-            color: var(--titanium-gold);
-            margin-bottom: 8px;
-        }
-
-        .heritage-stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .heritage-image {
+            padding: 10rem 4rem;
+            background: var(--void);
             position: relative;
-            height: 500px;
-            background: linear-gradient(135deg, var(--void-black), var(--panel-dark));
-            border: 1px solid rgba(88, 166, 255, 0.1);
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
-        .heritage-image::before {
-            content: '';
+        .heritage-stars {
             position: absolute;
             inset: 0;
-            background:
-                radial-gradient(circle at 30% 40%, rgba(78, 205, 196, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 70% 60%, rgba(201, 168, 76, 0.08) 0%, transparent 40%);
+            pointer-events: none;
         }
-
-        .heritage-image svg {
-            width: 60%;
-            height: 60%;
-            opacity: 0.6;
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: var(--off-white);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 3s ease-in-out infinite;
         }
-
-        /* Footer */
-        .footer {
-            padding: 80px 48px 40px;
-            border-top: 1px solid rgba(88, 166, 255, 0.1);
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.5; }
         }
-
-        .footer-content {
+        .heritage-inner {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr auto auto;
-            gap: 80px;
-            align-items: start;
-            margin-bottom: 60px;
-        }
-
-        .footer-brand {
-            max-width: 300px;
-        }
-
-        .footer-logo {
-            display: flex;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
             align-items: center;
-            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .heritage-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .stat-number {
             font-family: var(--font-serif);
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 0.5rem;
+        }
+        .heritage-text {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: var(--off-white);
+            font-weight: 300;
         }
 
-        .footer-logo svg {
-            width: 36px;
-            height: 36px;
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--void);
+            border-top: 1px solid rgba(200,169,110,0.1);
+            padding: 4rem;
         }
-
-        .footer-tagline {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .footer-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .footer-nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-nav a:hover {
-            color: var(--titanium-gold);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-social a {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            border-color: var(--hologram-cyan);
-            color: var(--hologram-cyan);
-        }
-
-        .footer-social svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .footer-bottom {
+        .footer-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding-top: 40px;
-            border-top: 1px solid rgba(88, 166, 255, 0.05);
+        }
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-brand .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            color: var(--off-white);
+            margin-bottom: 0.75rem;
+        }
+        .footer-brand .footer-tagline {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-social {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .footer-social a {
+            color: var(--muted);
+            transition: color 0.3s;
+        }
+        .footer-social a:hover { color: var(--gold); }
+        .footer-social svg { width: 20px; height: 20px; }
+        .footer-bottom {
+            border-top: 1px solid rgba(200,169,110,0.1);
+            padding-top: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-bottom span {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .footer-rocket {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .footer-rocket svg { width: 14px; height: 14px; fill: var(--gold); }
+
+        /* ─── CONFIGURE LAYOUT ─── */
+        .configure-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 3rem;
+            align-items: start;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        .footer-legal {
-            display: flex;
-            gap: 32px;
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1200px) {
+            .ship-text { padding: 3rem; }
+            .tech-pillars { gap: 2rem; }
         }
-
-        .footer-legal a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-legal a:hover {
-            color: var(--text-primary);
-        }
-
-        .footer-copyright {
-            color: var(--text-secondary);
-            font-size: 13px;
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 1024px) {
-            .nav-links {
-                display: none;
-            }
-
-            .nav-mobile-toggle {
-                display: block;
-            }
-
-            .ship-card-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .ship-card:nth-child(even) .ship-card-content {
-                direction: ltr;
-            }
-
-            .ship-visual {
-                height: 250px;
-            }
-
-            .configure-container {
-                grid-template-columns: 1fr;
-            }
-
-            .configure-summary {
-                position: static;
-            }
-
-            .heritage-container {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-        }
-
         @media (max-width: 768px) {
-            .section {
-                padding: 80px 24px;
-            }
-
-            .nav {
-                padding: 16px 24px;
-            }
-
-            .ship-card {
-                padding: 40px 24px;
-            }
-
-            .ship-specs {
-                grid-template-columns: 1fr;
-            }
-
-            .tech-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .heritage-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .color-options {
-                flex-wrap: wrap;
-            }
-
-            .configure-tabs {
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                padding-bottom: 8px;
-            }
-
-            .configure-tab {
-                flex-shrink: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-tagline {
-                font-size: 32px;
-            }
-
-            .section-title {
-                font-size: 32px;
-            }
-
-            .ship-name {
-                font-size: 36px;
-            }
-
-            .footer-legal {
-                flex-direction: column;
-                gap: 12px;
-            }
-        }
-
-        /* Scan line overlay */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 9999;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.03) 2px,
-                rgba(0, 0, 0, 0.03) 4px
-            );
-            opacity: 0.5;
+            .nav { padding: 1.2rem 2rem; }
+            .nav.scrolled { padding: 1rem 2rem; }
+            .nav-links, .nav-cta { display: none; }
+            .hamburger { display: flex; }
+            .hero-title { font-size: 12vw; letter-spacing: 0.3em; }
+            .hero-sub { font-size: 4vw; }
+            .section-title { font-size: 2.5rem; }
+            .ship-card { flex-direction: column !important; }
+            .ship-image-wrap { flex: none; height: 50vh; }
+            .ship-text { flex: none; padding: 2.5rem 2rem; }
+            .ship-name { font-size: 8vw; }
+            .ship-price { font-size: 4vw; }
+            .tech-section { padding: 6rem 2rem; }
+            .tech-pillars { grid-template-columns: 1fr; gap: 3rem; }
+            .configure-section { padding: 6rem 2rem; }
+            .configure-layout { grid-template-columns: 1fr; }
+            .config-summary { position: static; }
+            .heritage-section { padding: 6rem 2rem; }
+            .heritage-inner { grid-template-columns: 1fr; gap: 3rem; }
+            .heritage-stats { grid-template-columns: 1fr 1fr; }
+            .footer-top { flex-direction: column; }
+            .footer-links { gap: 1.5rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .interior-packages { flex-direction: column; }
+            .addon-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
 
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
     <nav class="nav" id="nav">
-        <a href="#" class="nav-logo">
-            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M20 4 L36 32 L20 26 L4 32 Z" stroke-linejoin="round"/>
-                <path d="M20 8 L30 28 L20 24 L10 28 Z"/>
-                <circle cx="20" cy="18" r="3"/>
-            </svg>
-            Aethercraft
-        </a>
+        <a href="#" class="nav-logo">AETHERCRAFT</a>
         <ul class="nav-links">
-            <li><a href="#lineup">Fleet</a></li>
+            <li><a href="#fleet">Fleet</a></li>
             <li><a href="#technology">Technology</a></li>
             <li><a href="#configure">Configure</a></li>
             <li><a href="#heritage">Heritage</a></li>
         </ul>
-        <button class="nav-cta" onclick="document.getElementById('configure').scrollIntoView({behavior: 'smooth'})">Reserve Yours</button>
-        <button class="nav-mobile-toggle" aria-label="Toggle menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <line x1="3" y1="12" x2="21" y2="12"/>
-                <line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
-        </button>
+        <a href="#configure" class="nav-cta">Begin Your Journey</a>
+        <div class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </div>
     </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#fleet" onclick="closeMobile()">Fleet</a>
+        <a href="#technology" onclick="closeMobile()">Technology</a>
+        <a href="#configure" onclick="closeMobile()">Configure</a>
+        <a href="#heritage" onclick="closeMobile()">Heritage</a>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <canvas id="starfield"></canvas>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="hero-logo">
-                <svg viewBox="0 0 120 120" fill="none">
-                    <path class="logo-stroke" d="M60 10 L110 95 L60 75 L10 95 Z" stroke="var(--titanium-gold)" stroke-width="2" stroke-linejoin="round"/>
-                    <path class="logo-stroke" d="M60 25 L90 80 L60 67 L30 80 Z" stroke="var(--hologram-cyan)" stroke-width="1.5" stroke-linejoin="round" style="animation-delay: 0.8s"/>
-                    <circle class="logo-stroke" cx="60" cy="50" r="8" stroke="var(--text-primary)" stroke-width="1.5" style="animation-delay: 1.1s"/>
-                    <line class="logo-stroke" x1="60" y1="10" x2="60" y2="25" stroke="var(--titanium-gold)" stroke-width="1" style="animation-delay: 1.4s"/>
-                    <line class="logo-stroke" x1="110" y1="95" x2="90" y2="80" stroke="var(--titanium-gold)" stroke-width="1" style="animation-delay: 1.4s"/>
-                    <line class="logo-stroke" x1="10" y1="95" x2="30" y2="80" stroke="var(--titanium-gold)" stroke-width="1" style="animation-delay: 1.4s"/>
-                </svg>
+            <h1 class="hero-title">AETHERCRAFT</h1>
+            <p class="hero-sub">Your Name in the Stars</p>
+            <div class="hero-ctas">
+                <a href="#fleet" class="btn-primary">Explore the Fleet</a>
+                <a href="#configure" class="btn-ghost">Configure Yours</a>
             </div>
-            <h1 class="hero-tagline">Your Name in the Stars</h1>
-            <p class="hero-subtitle">Personal space vehicles crafted for those who refuse to be confined</p>
-            <a href="#lineup" class="hero-cta">
-                Explore the Fleet
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
         </div>
         <div class="scroll-indicator">
             <span>Scroll</span>
-            <div class="line"></div>
+            <div class="scroll-line"></div>
         </div>
     </section>
 
-    <!-- Ship Lineup -->
-    <section class="ship-lineup" id="lineup">
-        <div class="section-header">
-            <p class="section-label">The Fleet</p>
-            <h2 class="section-title">Five Paths to the Infinite</h2>
-            <p class="section-subtitle">Each vessel represents a different relationship with the cosmos — from your first leap beyond Earth to establishing new worlds.</p>
-        </div>
-
-        <!-- Voyager -->
-        <div class="ship-card" data-ship="voyager">
-            <div class="ship-card-bg"></div>
-            <div class="ship-card-grid"></div>
-            <div class="ship-card-content">
-                <div class="ship-visual">
-                    <div class="ship-silhouette">
-                        <svg viewBox="0 0 400 200" fill="none">
-                            <path d="M50 150 L200 50 L350 150 L320 160 L200 100 L80 160 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                            <path d="M100 160 L200 80 L300 160" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                            <ellipse cx="200" cy="120" rx="40" ry="20" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/>
-                            <circle cx="200" cy="120" r="8" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <path d="M180 160 L200 180 L220 160" stroke="var(--wireframe-blue)" stroke-width="1"/>
-                        </svg>
-                    </div>
+    <!-- SHIP LINEUP -->
+    <div id="fleet">
+        <!-- VOYAGER -->
+        <section class="ship-section">
+            <div class="ship-card">
+                <div class="ship-image-wrap">
+                    <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---1bbba389-55d2-42e6-b789-66cae1c154fa.png" alt="Voyager" loading="lazy">
                 </div>
-                <div class="ship-info">
-                    <p class="ship-tagline">Entry-Level Interstellar</p>
-                    <h3 class="ship-name">Voyager</h3>
-                    <p class="ship-type">Compact single-pilot craft for the aspiring explorer</p>
-                    <p class="ship-price">$180,000 <span>USD</span></p>
-                    <div class="ship-specs">
-                        <div class="spec-pill">
-                            <span class="spec-label">Range</span>
-                            <span class="spec-value">2.4 AU</span>
+                <div class="ship-text">
+                    <div>
+                        <div class="section-label">Compact Explorer</div>
+                        <h2 class="ship-name">VOYAGER</h2>
+                        <p class="ship-tagline">The universe, distilled to its essence. One pilot. Infinite possibility.</p>
+                        <p class="ship-price">$180,000</p>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Range</div>
+                                <div class="spec-value">2.4 AU</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Passengers</div>
+                                <div class="spec-value">1</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Drive</div>
+                                <div class="spec-value">Ion</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Payload</div>
+                                <div class="spec-value">400 kg</div>
+                            </div>
                         </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Passengers</span>
-                            <span class="spec-value">1</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Drive</span>
-                            <span class="spec-value">Ion Array Mk VII</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Payload</span>
-                            <span class="spec-value">120 kg</span>
-                        </div>
+                        <a href="#configure" class="btn-outline">Configure</a>
                     </div>
-                    <button class="ship-cta" onclick="selectShip('voyager')">
-                        Configure
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Pioneer -->
-        <div class="ship-card" data-ship="pioneer">
-            <div class="ship-card-bg"></div>
-            <div class="ship-card-grid"></div>
-            <div class="ship-card-content">
-                <div class="ship-visual">
-                    <div class="ship-silhouette">
-                        <svg viewBox="0 0 400 200" fill="none">
-                            <path d="M30 160 L100 60 L300 60 L370 160 L340 170 L200 100 L60 170 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                            <path d="M80 170 L200 80 L320 170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                            <rect x="150" y="90" width="100" height="50" rx="5" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/>
-                            <circle cx="175" cy="115" r="10" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <circle cx="225" cy="115" r="10" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <path d="M170 170 L200 190 L230 170" stroke="var(--wireframe-blue)" stroke-width="1"/>
-                        </svg>
-                    </div>
+        <!-- PIONEER -->
+        <section class="ship-section">
+            <div class="ship-card">
+                <div class="ship-image-wrap">
+                    <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---d5ed82ec-c9fd-41d0-a0d3-10e9ab745221.png" alt="Pioneer" loading="lazy">
                 </div>
-                <div class="ship-info">
-                    <p class="ship-tagline">Weekend-to-Mars Capable</p>
-                    <h3 class="ship-name">Pioneer</h3>
-                    <p class="ship-type">2-passenger explorer built for extended missions</p>
-                    <p class="ship-price">$450,000 <span>USD</span></p>
-                    <div class="ship-specs">
-                        <div class="spec-pill">
-                            <span class="spec-label">Range</span>
-                            <span class="spec-value">4.1 AU</span>
+                <div class="ship-text">
+                    <div>
+                        <div class="section-label">Two-Passenger Explorer</div>
+                        <h2 class="ship-name">PIONEER</h2>
+                        <p class="ship-tagline">For those who venture beyond the map. Built for two, proven by thousands.</p>
+                        <p class="ship-price">$450,000</p>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Range</div>
+                                <div class="spec-value">4.1 AU</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Passengers</div>
+                                <div class="spec-value">2</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Drive</div>
+                                <div class="spec-value">Plasma</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Payload</div>
+                                <div class="spec-value">1,200 kg</div>
+                            </div>
                         </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Passengers</span>
-                            <span class="spec-value">2</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Drive</span>
-                            <span class="spec-value">Plasma Array Mk III</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Payload</span>
-                            <span class="spec-value">380 kg</span>
-                        </div>
+                        <a href="#configure" class="btn-outline">Configure</a>
                     </div>
-                    <button class="ship-cta" onclick="selectShip('pioneer')">
-                        Configure
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Odyssey -->
-        <div class="ship-card" data-ship="odyssey">
-            <div class="ship-card-bg"></div>
-            <div class="ship-card-grid"></div>
-            <div class="ship-card-content">
-                <div class="ship-visual">
-                    <div class="ship-silhouette">
-                        <svg viewBox="0 0 400 200" fill="none">
-                            <path d="M20 165 L80 50 L320 50 L380 165 L350 175 L200 85 L50 175 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                            <path d="M60 175 L200 70 L340 175" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                            <rect x="120" y="85" width="160" height="70" rx="8" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/>
-                            <circle cx="155" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <circle cx="200" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <circle cx="245" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/>
-                            <path d="M160 175 L200 200 L240 175" stroke="var(--wireframe-blue)" stroke-width="1"/>
-                        </svg>
-                    </div>
+        <!-- ODYSSEY -->
+        <section class="ship-section">
+            <div class="ship-card">
+                <div class="ship-image-wrap">
+                    <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---93d70939-57f1-4b9a-be3a-e681bd8bd6db.png" alt="Odyssey" loading="lazy">
                 </div>
-                <div class="ship-info">
-                    <p class="ship-tagline">Heliopause-Rated</p>
-                    <h3 class="ship-name">Odyssey</h3>
-                    <p class="ship-type">4-passenger family cruiser for the boldest journeys</p>
-                    <p class="ship-price">$890,000 <span>USD</span></p>
-                    <div class="ship-specs">
-                        <div class="spec-pill">
-                            <span class="spec-label">Range</span>
-                            <span class="spec-value">8.7 AU</span>
+                <div class="ship-text">
+                    <div>
+                        <div class="section-label">Family Cruiser</div>
+                        <h2 class="ship-name">ODYSSEY</h2>
+                        <p class="ship-tagline">Four souls, one ship, the solar system. Redefining what a family trip looks like.</p>
+                        <p class="ship-price">$890,000</p>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Range</div>
+                                <div class="spec-value">8.7 AU</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Passengers</div>
+                                <div class="spec-value">4</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Drive</div>
+                                <div class="spec-value">Plasma + Quantum</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Payload</div>
+                                <div class="spec-value">3,500 kg</div>
+                            </div>
                         </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Passengers</span>
-                            <span class="spec-value">4</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Drive</span>
-                            <span class="spec-value">Dual Plasma Array</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Payload</span>
-                            <span class="spec-value">720 kg</span>
-                        </div>
+                        <a href="#configure" class="btn-outline">Configure</a>
                     </div>
-                    <button class="ship-cta" onclick="selectShip('odyssey')">
-                        Configure
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Aether -->
-        <div class="ship-card" data-ship="aether">
-            <div class="ship-card-bg"></div>
-            <div class="ship-card-grid"></div>
-            <div class="ship-card-content">
-                <div class="ship-visual">
-                    <div class="ship-silhouette">
-                        <svg viewBox="0 0 400 200" fill="none">
-                            <path d="M10 170 L60 40 L340 40 L390 170 L360 180 L200 60 L40 180 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                            <path d="M50 180 L200 50 L350 180" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                            <ellipse cx="200" cy="100" rx="100" ry="50" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.4"/>
-                            <ellipse cx="200" cy="100" rx="80" ry="40" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/>
-                            <circle cx="160" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/>
-                            <circle cx="200" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/>
-                            <circle cx="240" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/>
-                            <path d="M150 180 L200 210 L250 180" stroke="var(--wireframe-blue)" stroke-width="1"/>
-                            <path d="M100 175 L80 195 L120 195 Z" stroke="var(--wireframe-blue)" stroke-width="1" fill="none"/>
-                            <path d="M300 175 L280 195 L320 195 Z" stroke="var(--wireframe-blue)" stroke-width="1" fill="none"/>
-                        </svg>
-                    </div>
+        <!-- AETHER -->
+        <section class="ship-section">
+            <div class="ship-card">
+                <div class="ship-image-wrap">
+                    <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---22b5f5c1-af1a-4c7b-a33c-04c72949884e.png" alt="Aether" loading="lazy">
                 </div>
-                <div class="ship-info">
-                    <p class="ship-tagline">Flagship Luxury</p>
-                    <h3 class="ship-name">Aether</h3>
-                    <p class="ship-type">6-passenger yacht with plasma drive and smart-home interior</p>
-                    <p class="ship-price">$2,400,000 <span>USD</span></p>
-                    <div class="ship-specs">
-                        <div class="spec-pill">
-                            <span class="spec-label">Range</span>
-                            <span class="spec-value">15.2 AU</span>
+                <div class="ship-text">
+                    <div>
+                        <div class="section-label">Flagship Luxury Yacht</div>
+                        <h2 class="ship-name">AETHER</h2>
+                        <p class="ship-tagline">Six passengers. Fifteen astronomical units. Absolute sovereignty over the void.</p>
+                        <p class="ship-price">$2,400,000</p>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Range</div>
+                                <div class="spec-value">15 AU</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Passengers</div>
+                                <div class="spec-value">6</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Drive</div>
+                                <div class="spec-value">Antimatter</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Payload</div>
+                                <div class="spec-value">8,000 kg</div>
+                            </div>
                         </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Passengers</span>
-                            <span class="spec-value">6</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Drive</span>
-                            <span class="spec-value">Quantum Fold Drive</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Payload</span>
-                            <span class="spec-value">1,200 kg</span>
-                        </div>
+                        <a href="#configure" class="btn-outline">Configure</a>
                     </div>
-                    <button class="ship-cta" onclick="selectShip('aether')">
-                        Configure
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Leviathan -->
-        <div class="ship-card" data-ship="leviathan">
-            <div class="ship-card-bg"></div>
-            <div class="ship-card-grid"></div>
-            <div class="ship-card-content">
-                <div class="ship-visual">
-                    <div class="ship-silhouette">
-                        <svg viewBox="0 0 400 200" fill="none">
-                            <rect x="40" y="50" width="320" height="120" rx="10" fill="rgba(78,205,196,0.05)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                            <rect x="60" y="70" width="280" height="80" rx="5" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                            <line x1="100" y1="50" x2="100" y2="170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.3"/>
-                            <line x1="160" y1="50" x2="160" y2="170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.3"/>
-                            <line x1="220" y1="50" x2="220" y2="170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.3"/>
-                            <line x1="280" y1="50" x2="280" y2="170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.3"/>
-                            <circle cx="80" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <circle cx="120" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <circle cx="160" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <circle cx="240" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <circle cx="280" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <circle cx="320" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>
-                            <path d="M50 170 L40 190 L80 190 L90 170" stroke="var(--wireframe-blue)" stroke-width="1" fill="none"/>
-                            <path d="M310 170 L320 190 L360 190 L350 170" stroke="var(--wireframe-blue)" stroke-width="1" fill="none"/>
-                        </svg>
-                    </div>
+        <!-- LEVIATHAN -->
+        <section class="ship-section">
+            <div class="ship-card">
+                <div class="ship-image-wrap">
+                    <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---4a3c7dc9-5b7d-4700-b222-f60dae17b366.png" alt="Leviathan" loading="lazy">
                 </div>
-                <div class="ship-info">
-                    <p class="ship-tagline">Colony-Class</p>
-                    <h3 class="ship-name">Leviathan</h3>
-                    <p class="ship-type">Modular freighter and habitat for establishing new frontiers</p>
-                    <p class="ship-price">$6,000,000+ <span>USD</span></p>
-                    <div class="ship-specs">
-                        <div class="spec-pill">
-                            <span class="spec-label">Range</span>
-                            <span class="spec-value">Modular</span>
+                <div class="ship-text">
+                    <div>
+                        <div class="section-label">Colony-Class Vessel</div>
+                        <h2 class="ship-name">LEVIATHAN</h2>
+                        <p class="ship-tagline">Not a ship. A city among the stars. Twelve passengers. Infinite ambition.</p>
+                        <p class="ship-price">$6,000,000+</p>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">Range</div>
+                                <div class="spec-value">Unlimited</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Passengers</div>
+                                <div class="spec-value">12</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Drive</div>
+                                <div class="spec-value">Warp</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Payload</div>
+                                <div class="spec-value">840,000 kg</div>
+                            </div>
                         </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Passengers</span>
-                            <span class="spec-value">12 (habitat)</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Drive</span>
-                            <span class="spec-value">User Selectable</span>
-                        </div>
-                        <div class="spec-pill">
-                            <span class="spec-label">Payload</span>
-                            <span class="spec-value">48,000 kg</span>
-                        </div>
+                        <a href="#configure" class="btn-outline">Configure</a>
                     </div>
-                    <button class="ship-cta" onclick="selectShip('leviathan')">
-                        Configure
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <!-- Technology Section -->
+    <!-- TECHNOLOGY -->
     <section class="tech-section" id="technology">
-        <div class="section-header">
-            <p class="section-label">Innovation</p>
-            <h2 class="section-title">Engineering the Impossible</h2>
-            <p class="section-subtitle">Three decades of research compressed into every vessel we craft.</p>
-        </div>
-        <div class="tech-grid">
-            <div class="tech-pillar">
-                <div class="tech-icon">
-                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="32" cy="32" r="24"/>
-                        <circle cx="32" cy="32" r="16" stroke-dasharray="4 4"/>
-                        <circle cx="32" cy="32" r="8"/>
-                        <path d="M32 8 L32 16M32 48 L32 56M8 32 L16 32M48 32 L56 32"/>
-                    </svg>
-                </div>
-                <h3 class="tech-title">Plasma Drive</h3>
-                <p class="tech-description">Our proprietary plasma confinement system delivers three times the efficiency of conventional ion drives. Sustainable interstellar cruising at a fraction of the fuel cost.</p>
-                <p class="tech-detail">The Mark VII plasma array achieves specific impulse ratings of 45,000 seconds — unprecedented in personal spacecraft. Fuel consumption reduced by 68% compared to previous generation technology.</p>
+        <div class="tech-inner">
+            <div class="tech-header">
+                <div class="section-label">Innovation</div>
+                <h2 class="section-title">Engineering the Impossible</h2>
+                <div class="gold-underline" style="margin: 1.5rem auto;"></div>
             </div>
-            <div class="tech-pillar">
-                <div class="tech-icon">
-                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M32 8 L56 24 L56 48 L32 56 L8 48 L8 24 Z"/>
+            <div class="tech-pillars">
+                <div class="pillar">
+                    <!-- Plasma Drive Icon -->
+                    <svg class="pillar-icon" viewBox="0 0 64 64">
                         <circle cx="32" cy="32" r="8"/>
-                        <path d="M32 24 L32 16M32 40 L32 48"/>
-                        <circle cx="20" cy="20" r="3" fill="currentColor"/>
-                        <circle cx="44" cy="20" r="3" fill="currentColor"/>
-                        <circle cx="20" cy="44" r="3" fill="currentColor"/>
-                        <circle cx="44" cy="44" r="3" fill="currentColor"/>
+                        <path d="M32 8 L32 20 M32 44 L32 56 M8 32 L20 32 M44 32 L56 32"/>
+                        <path d="M15 15 L24 24 M40 40 L49 49 M49 15 L40 24 M24 40 L15 49"/>
+                        <circle cx="32" cy="32" r="20" stroke-dasharray="4 4"/>
                     </svg>
+                    <h3 class="pillar-title">PLASMA DRIVE</h3>
+                    <p class="pillar-desc">Sustained thrust beyond chemical limits. 0.02g continuous, reaching Mars in 39 days. The power to go further, faster.</p>
                 </div>
-                <h3 class="tech-title">Quantum Navigation</h3>
-                <p class="tech-description">AI-assisted trajectory planning that accounts for 1.2 million gravitational variables in real-time. Your path, optimized automatically.</p>
-                <p class="tech-detail">Our quantum neural network processes orbital mechanics 10,000x faster than classical computers. Hazard avoidance, fuel optimization, and arrival precision — handled before you finish your morning coffee.</p>
-            </div>
-            <div class="tech-pillar">
-                <div class="tech-icon">
-                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="16" y="8" width="32" height="48" rx="4"/>
-                        <path d="M24 20 L40 20M24 28 L36 28M24 36 L40 36"/>
-                        <circle cx="32" cy="48" r="4"/>
-                        <path d="M20 56 L20 60 M44 56 L44 60"/>
+                <div class="pillar">
+                    <!-- Quantum Navigation Icon -->
+                    <svg class="pillar-icon" viewBox="0 0 64 64">
+                        <polygon points="32,4 60,52 4,52"/>
+                        <circle cx="32" cy="32" r="6"/>
+                        <line x1="32" y1="26" x2="32" y2="10"/>
+                        <circle cx="32" cy="32" r="20" stroke-dasharray="3 5"/>
                     </svg>
+                    <h3 class="pillar-title">QUANTUM NAVIGATION</h3>
+                    <p class="pillar-desc">Sub-second trajectory calculation across 50 AU. Zero drift, zero collision risk. Precision where it matters most.</p>
                 </div>
-                <h3 class="tech-title">Hibernation Pods</h3>
-                <p class="tech-description">Medical-grade cryogenic pods rated for journeys up to 5 years. Wake up exactly where you want to be.</p>
-                <p class="tech-detail">Advanced tissue vitrification with neural pathway preservation. Metabolic rates reduced to 2% of baseline. Full medical monitoring with automated emergency revival protocols. Trusted by 12,000+ deep space travelers.</p>
+                <div class="pillar">
+                    <!-- Cryonic Hibernation Icon -->
+                    <svg class="pillar-icon" viewBox="0 0 64 64">
+                        <rect x="16" y="12" width="32" height="44" rx="4"/>
+                        <path d="M22 24 Q32 20 42 24 Q32 28 22 24"/>
+                        <path d="M22 34 Q32 30 42 34 Q32 38 22 34"/>
+                        <path d="M22 44 Q32 40 42 44 Q32 48 22 44"/>
+                        <line x1="32" y1="4" x2="32" y2="12"/>
+                        <line x1="26" y1="6" x2="32" y2="12"/>
+                        <line x1="38" y1="6" x2="32" y2="12"/>
+                    </svg>
+                    <h3 class="pillar-title">CRYONIC HIBERNATION</h3>
+                    <p class="pillar-desc">Passengers sleep through 90% of transit. Awake refreshed and ready. Medically supervised throughout the journey.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Configure Section -->
+    <!-- CONFIGURE -->
     <section class="configure-section" id="configure">
-        <div class="section-header">
-            <p class="section-label">Build Yours</p>
-            <h2 class="section-title">Configure Your Vessel</h2>
-            <p class="section-subtitle">Every Aethercraft is built to order. Select your model, choose your options, and reserve your place among the stars.</p>
-        </div>
-
-        <div class="configure-container">
-            <div class="configure-main">
-                <div class="configure-tabs">
-                    <button class="configure-tab active" data-ship-tab="voyager">Voyager</button>
-                    <button class="configure-tab" data-ship-tab="pioneer">Pioneer</button>
-                    <button class="configure-tab" data-ship-tab="odyssey">Odyssey</button>
-                    <button class="configure-tab" data-ship-tab="aether">Aether</button>
-                    <button class="configure-tab" data-ship-tab="leviathan">Leviathan</button>
-                </div>
-
-                <div class="configure-preview">
-                    <svg viewBox="0 0 400 200" fill="none" id="configure-ship-svg">
-                        <path d="M50 150 L200 50 L350 150 L320 160 L200 100 L80 160 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/>
-                        <path d="M100 160 L200 80 L300 160" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/>
-                        <ellipse cx="200" cy="120" rx="40" ry="20" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/>
-                        <circle cx="200" cy="120" r="8" fill="var(--titanium-gold)" opacity="0.8"/>
-                    </svg>
-                </div>
-
-                <div class="configure-options">
-                    <h3>Hull Color</h3>
-                    <div class="color-options">
-                        <button class="color-swatch void selected" data-color="void" title="Void Black"></button>
-                        <button class="color-swatch titanium" data-color="titanium" title="Titanium Silver"></button>
-                        <button class="color-swatch gold" data-color="gold" title="Titanium Gold"></button>
-                        <button class="color-swatch cyan" data-color="cyan" title="Hologram Cyan"></button>
+        <div class="configure-inner">
+            <div class="section-label">Build Yours</div>
+            <h2 class="section-title">Configure Your Craft</h2>
+            <div class="gold-underline"></div>
+            <div class="configure-layout">
+                <div class="config-steps">
+                    <!-- Step 1: Ship -->
+                    <div>
+                        <div class="config-step-label">Step 1 — Select Your Ship</div>
+                        <div class="ship-selector" id="shipSelector">
+                            <div class="ship-option selected" data-ship="VOYAGER" data-price="180000">
+                                <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---1bbba389-55d2-42e6-b789-66cae1c154fa.png" alt="Voyager">
+                                <div class="ship-option-name">VOYAGER</div>
+                            </div>
+                            <div class="ship-option" data-ship="PIONEER" data-price="450000">
+                                <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---d5ed82ec-c9fd-41d0-a0d3-10e9ab745221.png" alt="Pioneer">
+                                <div class="ship-option-name">PIONEER</div>
+                            </div>
+                            <div class="ship-option" data-ship="ODYSSEY" data-price="890000">
+                                <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---93d70939-57f1-4b9a-be3a-e681bd8bd6db.png" alt="Odyssey">
+                                <div class="ship-option-name">ODYSSEY</div>
+                            </div>
+                            <div class="ship-option" data-ship="AETHER" data-price="2400000">
+                                <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---22b5f5c1-af1a-4c7b-a33c-04c72949884e.png" alt="Aether">
+                                <div class="ship-option-name">AETHER</div>
+                            </div>
+                            <div class="ship-option" data-ship="LEVIATHAN" data-price="6000000">
+                                <img src="file:///Users/chaz/.openclaw/media/tool-image-generation/image-1---4a3c7dc9-5b7d-4700-b222-f60dae17b366.png" alt="Leviathan">
+                                <div class="ship-option-name">LEVIATHAN</div>
+                            </div>
+                        </div>
                     </div>
-
-                    <h3>Interior Package</h3>
-                    <div class="package-options">
-                        <label class="package-option selected">
-                            <input type="radio" name="package" value="standard" checked>
-                            <div class="package-info">
-                                <div class="package-radio"></div>
-                                <div>
-                                    <div class="package-name">Standard</div>
-                                    <div class="package-desc">Essential comforts for the practical explorer</div>
+                    <!-- Step 2: Color -->
+                    <div>
+                        <div class="config-step-label">Step 2 — Hull Color</div>
+                        <div class="color-swatches" id="colorSwatches">
+                            <div class="swatch swatch-obsidian selected" data-color="Obsidian Black" data-price="0" title="Obsidian Black"></div>
+                            <div class="swatch swatch-titanium" data-color="Titanium Silver" data-price="12000" title="Titanium Silver"></div>
+                            <div class="swatch swatch-nebula" data-color="Nebula Blue" data-price="18000" title="Nebula Blue"></div>
+                            <div class="swatch swatch-solar" data-color="Solar Gold" data-price="24000" title="Solar Gold"></div>
+                        </div>
+                    </div>
+                    <!-- Step 3: Interior -->
+                    <div>
+                        <div class="config-step-label">Step 3 — Interior Package</div>
+                        <div class="interior-packages" id="interiorPackages">
+                            <div class="pkg-card selected" data-pkg="Standard" data-price="0">
+                                <div class="pkg-name">Standard</div>
+                                <div class="pkg-price">Included</div>
+                            </div>
+                            <div class="pkg-card" data-pkg="Executive" data-price="85000">
+                                <div class="pkg-name">Executive</div>
+                                <div class="pkg-price">+$85,000</div>
+                            </div>
+                            <div class="pkg-card" data-pkg="Sovereign" data-price="240000">
+                                <div class="pkg-name">Sovereign</div>
+                                <div class="pkg-price">+$240,000</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 4: Add-ons -->
+                    <div>
+                        <div class="config-step-label">Step 4 — Optional Upgrades</div>
+                        <div class="addon-list" id="addonList">
+                            <div class="addon-item" data-addon="Extended Range" data-price="45000">
+                                <div class="addon-checkbox">
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                        <path d="M1 4L3.5 6.5L9 1" stroke="#050508" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+                                <div class="addon-info">
+                                    <div class="addon-name">Extended Range</div>
+                                    <div class="addon-price">+$45,000</div>
                                 </div>
                             </div>
-                            <div class="package-price">Included</div>
-                        </label>
-                        <label class="package-option">
-                            <input type="radio" name="package" value="premium">
-                            <div class="package-info">
-                                <div class="package-radio"></div>
-                                <div>
-                                    <div class="package-name">Premium</div>
-                                    <div class="package-desc">Enhanced living quarters with dedicated sleeping pods</div>
+                            <div class="addon-item" data-addon="Medical Bay" data-price="120000">
+                                <div class="addon-checkbox">
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                        <path d="M1 4L3.5 6.5L9 1" stroke="#050508" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+                                <div class="addon-info">
+                                    <div class="addon-name">Medical Bay</div>
+                                    <div class="addon-price">+$120,000</div>
                                 </div>
                             </div>
-                            <div class="package-price">+$45,000</div>
-                        </label>
-                        <label class="package-option">
-                            <input type="radio" name="package" value="elite">
-                            <div class="package-info">
-                                <div class="package-radio"></div>
-                                <div>
-                                    <div class="package-name">Elite</div>
-                                    <div class="package-desc">Full smart-home interior with entertainment suite</div>
+                            <div class="addon-item" data-addon="AI Copilot" data-price="65000">
+                                <div class="addon-checkbox">
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                        <path d="M1 4L3.5 6.5L9 1" stroke="#050508" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+                                <div class="addon-info">
+                                    <div class="addon-name">AI Copilot</div>
+                                    <div class="addon-price">+$65,000</div>
                                 </div>
                             </div>
-                            <div class="package-price">+$120,000</div>
-                        </label>
-                    </div>
-
-                    <h3>Add-On Packages</h3>
-                    <div class="addon-options">
-                        <label class="addon-option selected">
-                            <input type="checkbox" name="addon" value="navigation" checked>
-                            <div class="addon-info">
-                                <div class="addon-checkbox"></div>
-                                <span class="addon-name">Quantum Navigation System</span>
+                            <div class="addon-item" data-addon="Entertainment Suite" data-price="38000">
+                                <div class="addon-checkbox">
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                        <path d="M1 4L3.5 6.5L9 1" stroke="#050508" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+                                <div class="addon-info">
+                                    <div class="addon-name">Entertainment Suite</div>
+                                    <div class="addon-price">+$38,000</div>
+                                </div>
                             </div>
-                            <div class="addon-price">+$25,000</div>
-                        </label>
-                        <label class="addon-option">
-                            <input type="checkbox" name="addon" value="hibernation">
-                            <div class="addon-info">
-                                <div class="addon-checkbox"></div>
-                                <span class="addon-name">Hibernation Pods (2)</span>
-                            </div>
-                            <div class="addon-price">+$180,000</div>
-                        </label>
-                        <label class="addon-option">
-                            <input type="checkbox" name="addon" value="extended-fuel">
-                            <div class="addon-info">
-                                <div class="addon-checkbox"></div>
-                                <span class="addon-name">Extended Fuel Capacity</span>
-                            </div>
-                            <div class="addon-price">+$35,000</div>
-                        </label>
-                        <label class="addon-option">
-                            <input type="checkbox" name="addon" value="defense">
-                            <div class="addon-info">
-                                <div class="addon-checkbox"></div>
-                                <span class="addon-name">Debris Defense Array</span>
-                            </div>
-                            <div class="addon-price">+$55,000</div>
-                        </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="configure-summary">
-                <h3 class="summary-title">Your Configuration</h3>
-                <p class="summary-ship" id="summary-ship-name">Voyager — Entry-Level Interstellar</p>
-
-                <div class="summary-line">
-                    <span class="label">Base Price</span>
-                    <span class="value" id="summary-base">$180,000</span>
+                <!-- Summary Panel -->
+                <div class="config-summary">
+                    <div class="summary-title">YOUR CONFIGURATION</div>
+                    <div class="summary-line"><span>Ship</span><span id="sumShip">VOYAGER</span></div>
+                    <div class="summary-line"><span>Base Price</span><span id="sumBase">$180,000</span></div>
+                    <div class="summary-line"><span>Color</span><span id="sumColor">Obsidian Black</span></div>
+                    <div class="summary-line"><span>Color Upgrade</span><span id="sumColorPrice">$0</span></div>
+                    <div class="summary-line"><span>Interior</span><span id="sumInterior">Standard</span></div>
+                    <div class="summary-line"><span>Interior Upgrade</span><span id="sumInteriorPrice">$0</span></div>
+                    <div class="summary-line"><span>Add-ons</span><span id="sumAddons">None</span></div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="sumTotal">$180,000</span>
+                    </div>
+                    <button class="btn-request" onclick="submitQuote()">Request Quote</button>
                 </div>
-                <div class="summary-line">
-                    <span class="label">Hull Color</span>
-                    <span class="value" id="summary-color">Void Black</span>
-                </div>
-                <div class="summary-line">
-                    <span class="label">Interior Package</span>
-                    <span class="value" id="summary-package">Standard</span>
-                </div>
-                <div class="summary-line">
-                    <span class="label">Add-Ons</span>
-                    <span class="value" id="summary-addons">+$25,000</span>
-                </div>
-
-                <div class="summary-total">
-                    <span class="label">Total</span>
-                    <span class="value" id="summary-total">$205,000</span>
-                </div>
-
-                <button class="summary-cta">Reserve Your Aethercraft</button>
             </div>
         </div>
     </section>
 
-    <!-- Heritage Section -->
+    <!-- HERITAGE -->
     <section class="heritage-section" id="heritage">
-        <div class="heritage-container">
-            <div class="heritage-story">
-                <p class="section-label">Our Heritage</p>
-                <h2>Built on Luna.<br>Destined for the Stars.</h2>
-                <p>Founded in 2041 by a consortium of aerospace engineers who believed the stars should belong to everyone. We started in a converted mining facility in the Tycho Industrial District with 47 employees and an impossible dream.</p>
-                <p>Today, Aethercraft operates the most advanced personal spacecraft manufacturing facility in the solar system. Every vessel is crafted by hand in our lunar facilities, tested against conditions that would destroy lesser craft, and backed by the most comprehensive warranty in the industry.</p>
-                <p>We have delivered over 4,200 spacecraft to adventurers, families, scientists, and visionaries across eight planets. But we are just getting started.</p>
-            </div>
+        <div class="heritage-stars" id="heritageStars"></div>
+        <div class="heritage-inner">
             <div class="heritage-stats">
-                <div class="heritage-stat">
-                    <div class="heritage-stat-value" data-count="4200">0</div>
-                    <div class="heritage-stat-label">Spacecraft Delivered</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="2041">0</div>
+                    <div class="stat-label">Founded</div>
                 </div>
-                <div class="heritage-stat">
-                    <div class="heritage-stat-value" data-count="47">0</div>
-                    <div class="heritage-stat-label">Years of Excellence</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="4200">0</div>
+                    <div class="stat-label">Craft Sold</div>
                 </div>
-                <div class="heritage-stat">
-                    <div class="heritage-stat-value" data-count="8">0</div>
-                    <div class="heritage-stat-label">Planets Served</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="47">0</div>
+                    <div class="stat-label">Years</div>
                 </div>
-                <div class="heritage-stat">
-                    <div class="heritage-stat-value" data-count="100">0</div>
-                    <div class="heritage-stat-label">Year Warranty</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="0">0</div>
+                    <div class="stat-label">Fatalities</div>
                 </div>
+            </div>
+            <div class="heritage-text-col">
+                <div class="section-label">Our Story</div>
+                <h2 class="section-title">Heritage</h2>
+                <div class="gold-underline"></div>
+                <p class="heritage-text">Aethercraft began not as a company, but as a question: Why should the stars belong only to governments? Founded in the lunar colony of Serenity, we've spent five decades making personal spaceflight not just possible, but inevitable.</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M20 4 L36 32 L20 26 L4 32 Z" stroke-linejoin="round"/>
-                        <path d="M20 8 L30 28 L20 24 L10 28 Z"/>
-                        <circle cx="20" cy="18" r="3"/>
-                    </svg>
-                    Aethercraft
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">AETHERCRAFT</div>
+                    <div class="footer-tagline">Your Name in the Stars</div>
                 </div>
-                <p class="footer-tagline">Personal space vehicles for those who refuse to be confined. Crafted on Luna. Destined for the infinite.</p>
+                <div class="footer-links">
+                    <a href="#fleet">Fleet</a>
+                    <a href="#technology">Technology</a>
+                    <a href="#configure">Configure</a>
+                    <a href="#heritage">Heritage</a>
+                    <a href="#">Press</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Legal</a>
+                </div>
+                <div class="footer-social">
+                    <!-- X / Twitter -->
+                    <a href="#" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 5.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="#" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="2" width="20" height="20" rx="5"/>
+                            <circle cx="12" cy="12" r="5"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="#" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <nav class="footer-nav">
-                <a href="#lineup">The Fleet</a>
-                <a href="#technology">Technology</a>
-                <a href="#configure">Configure</a>
-                <a href="#heritage">Heritage</a>
-            </nav>
-            <div class="footer-social">
-                <a href="#" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
+            <div class="footer-bottom">
+                <span>© 2048 Aethercraft Inc. All rights reserved.</span>
+                <span class="footer-rocket">
+                    <!-- Inline SVG rocket -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C12 2 7 7 7 13C7 16.866 9.239 20 12 22C14.761 20 17 16.866 17 13C17 7 12 2 12 2Z" fill="#c8a96e"/>
+                        <circle cx="12" cy="13" r="2.5" fill="#050508"/>
+                        <path d="M12 22 L10 18 L14 18 Z" fill="#c8a96e"/>
                     </svg>
-                </a>
-                <a href="#" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="4" y="4" width="16" height="16" rx="4"/>
-                        <circle cx="12" cy="12" r="4"/>
-                        <circle cx="18" cy="6" r="1" fill="currentColor"/>
-                    </svg>
-                </a>
-                <a href="#" aria-label="YouTube">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="4" y="6" width="16" height="12" rx="3"/>
-                        <path d="M10 9l5 3-5 3z" fill="currentColor"/>
-                    </svg>
-                </a>
+                </span>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
-            </div>
-            <p class="footer-copyright">2041-2088 Aethercraft Industries. All rights reserved. Made on Luna.</p>
         </div>
     </footer>
 
     <script>
-        // Starfield Canvas
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        let mouseX = 0;
-        let mouseY = 0;
+        // ─── GSAP ANIMATIONS ───
+        gsap.registerPlugin(ScrollTrigger);
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initStars();
-        }
-
-        function initStars() {
-            stars = [];
-            const numStars = Math.floor((canvas.width * canvas.height) / 3000);
-
-            for (let i = 0; i < numStars; i++) {
-                const layer = Math.random();
-                let size, speed, opacity;
-
-                if (layer < 0.6) {
-                    size = Math.random() * 1 + 0.5;
-                    speed = 0.1;
-                    opacity = Math.random() * 0.5 + 0.2;
-                } else if (layer < 0.9) {
-                    size = Math.random() * 1.5 + 1;
-                    speed = 0.3;
-                    opacity = Math.random() * 0.6 + 0.3;
-                } else {
-                    size = Math.random() * 2 + 1.5;
-                    speed = 0.5;
-                    opacity = Math.random() * 0.8 + 0.2;
-                }
-
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size,
-                    speed,
-                    opacity,
-                    twinkle: Math.random() * Math.PI * 2
-                });
-            }
-        }
-
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const time = Date.now() * 0.001;
-
-            stars.forEach(star => {
-                const parallaxX = (mouseX - canvas.width / 2) * star.speed * 0.02;
-                const parallaxY = (mouseY - canvas.height / 2) * star.speed * 0.02;
-
-                const twinkleOpacity = star.opacity * (0.7 + 0.3 * Math.sin(time * 2 + star.twinkle));
-
-                ctx.beginPath();
-                ctx.arc(
-                    star.x + parallaxX,
-                    star.y + parallaxY,
-                    star.size,
-                    0,
-                    Math.PI * 2
-                );
-                ctx.fillStyle = `rgba(255, 255, 255, ${twinkleOpacity})`;
-                ctx.fill();
-
-                if (star.size > 1.5) {
-                    ctx.beginPath();
-                    ctx.arc(
-                        star.x + parallaxX,
-                        star.y + parallaxY,
-                        star.size * 2,
-                        0,
-                        Math.PI * 2
-                    );
-                    ctx.fillStyle = `rgba(200, 220, 255, ${twinkleOpacity * 0.2})`;
-                    ctx.fill();
-                }
-            });
-
-            requestAnimationFrame(drawStars);
-        }
-
-        canvas.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        drawStars();
-
-        // Navigation scroll effect
-        const nav = document.getElementById('nav');
+        // Nav scroll
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
         });
 
-        // Ship card scroll reveal
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+        function closeMobile() { mobileMenu.classList.remove('open'); }
 
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.ship-card').forEach(card => {
-            revealObserver.observe(card);
+        // Hero entrance
+        gsap.from('.hero-content > *', {
+            opacity: 0,
+            y: 40,
+            stagger: 0.2,
+            duration: 1.2,
+            ease: 'power3.out'
         });
 
-        // Heritage stat counter animation
-        const statObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statValues = entry.target.querySelectorAll('.heritage-stat-value');
-                    statValues.forEach(stat => {
-                        const target = parseInt(stat.dataset.count);
-                        const duration = 2000;
-                        const start = Date.now();
-
-                        function updateCount() {
-                            const elapsed = Date.now() - start;
-                            const progress = Math.min(elapsed / duration, 1);
-                            const easeOut = 1 - Math.pow(1 - progress, 3);
-                            const current = Math.floor(easeOut * target);
-                            stat.textContent = current.toLocaleString();
-
-                            if (progress < 1) {
-                                requestAnimationFrame(updateCount);
-                            }
-                        }
-
-                        updateCount();
-                    });
-                    statObserver.unobserve(entry.target);
-                }
+        // Ship sections clip-path reveal
+        document.querySelectorAll('.ship-section').forEach((section, i) => {
+            const img = section.querySelector('.ship-image-wrap');
+            const text = section.querySelector('.ship-text');
+            const isEven = i % 2 === 0;
+            gsap.set(img, { clipPath: isEven ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)' });
+            gsap.set(text, { opacity: 0, x: isEven ? 40 : -40 });
+            gsap.to(img, {
+                clipPath: 'inset(0 0% 0 0)',
+                duration: 1.2,
+                ease: 'power3.inOut',
+                scrollTrigger: { trigger: section, start: 'top 70%', end: 'top 20%', scrub: 1 }
             });
-        }, { threshold: 0.5 });
+            gsap.to(text, {
+                opacity: 1, x: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: section, start: 'top 60%', toggleActions: 'play none none none' }
+            });
+        });
 
-        const heritageSection = document.querySelector('.heritage-stats');
-        if (heritageSection) {
-            statObserver.observe(heritageSection);
+        // Technology pillars stagger
+        gsap.from('.pillar', {
+            opacity: 0,
+            y: 50,
+            stagger: 0.2,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: '.tech-pillars', start: 'top 75%', toggleActions: 'play none none none' }
+        });
+
+        // Heritage stars
+        const starsContainer = document.getElementById('heritageStars');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (2 + Math.random() * 3) + 's';
+            starsContainer.appendChild(star);
         }
 
-        // Configure functionality
-        const shipData = {
-            voyager: { name: 'Voyager — Entry-Level Interstellar', base: 180000, svg: '<path d="M50 150 L200 50 L350 150 L320 160 L200 100 L80 160 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/><path d="M100 160 L200 80 L300 160" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/><ellipse cx="200" cy="120" rx="40" ry="20" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/><circle cx="200" cy="120" r="8" fill="var(--titanium-gold)" opacity="0.8"/>' },
-            pioneer: { name: 'Pioneer — Weekend-to-Mars Capable', base: 450000, svg: '<path d="M30 160 L100 60 L300 60 L370 160 L340 170 L200 100 L60 170 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/><path d="M80 170 L200 80 L320 170" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/><rect x="150" y="90" width="100" height="50" rx="5" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/><circle cx="175" cy="115" r="10" fill="var(--titanium-gold)" opacity="0.8"/><circle cx="225" cy="115" r="10" fill="var(--titanium-gold)" opacity="0.8"/>' },
-            odyssey: { name: 'Odyssey — Heliopause-Rated', base: 890000, svg: '<path d="M20 165 L80 50 L320 50 L380 165 L350 175 L200 85 L50 175 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/><path d="M60 175 L200 70 L340 175" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/><rect x="120" y="85" width="160" height="70" rx="8" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/><circle cx="155" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/><circle cx="200" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/><circle cx="245" cy="120" r="12" fill="var(--titanium-gold)" opacity="0.8"/>' },
-            aether: { name: 'Aether — Flagship Luxury', base: 2400000, svg: '<path d="M10 170 L60 40 L340 40 L390 170 L360 180 L200 60 L40 180 Z" fill="rgba(78,205,196,0.1)" stroke="var(--hologram-cyan)" stroke-width="1.5"/><path d="M50 180 L200 50 L350 180" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/><ellipse cx="200" cy="100" rx="100" ry="50" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.4"/><ellipse cx="200" cy="100" rx="80" ry="40" stroke="var(--hologram-cyan)" stroke-width="1" opacity="0.6"/><circle cx="160" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/><circle cx="200" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/><circle cx="240" cy="100" r="10" fill="var(--titanium-gold)" opacity="0.9"/>' },
-            leviathan: { name: 'Leviathan — Colony-Class Freighter', base: 6000000, svg: '<rect x="40" y="50" width="320" height="120" rx="10" fill="rgba(78,205,196,0.05)" stroke="var(--hologram-cyan)" stroke-width="1.5"/><rect x="60" y="70" width="280" height="80" rx="5" stroke="var(--wireframe-blue)" stroke-width="1" opacity="0.5"/><circle cx="80" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/><circle cx="120" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/><circle cx="160" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/><circle cx="240" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/><circle cx="280" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/><circle cx="320" cy="110" r="15" fill="var(--titanium-gold)" opacity="0.7"/>' }
+        // Heritage stats count-up
+        document.querySelectorAll('.stat-number').forEach(el => {
+            const target = parseInt(el.dataset.target);
+            gsap.to(el, {
+                innerHTML: target,
+                duration: 2,
+                ease: 'power2.out',
+                snap: { innerHTML: 1 },
+                scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' },
+                onUpdate: function() {
+                    el.innerHTML = Math.round(parseFloat(el.innerHTML)).toLocaleString();
+                }
+            });
+        });
+
+        // Heritage text fade
+        gsap.from('.heritage-text-col', {
+            opacity: 0,
+            x: 40,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: '.heritage-section', start: 'top 60%', toggleActions: 'play none none none' }
+        });
+
+        // ─── CONFIGURE LOGIC ───
+        let config = {
+            ship: 'VOYAGER',
+            basePrice: 180000,
+            color: 'Obsidian Black',
+            colorPrice: 0,
+            interior: 'Standard',
+            interiorPrice: 0,
+            addons: []
         };
 
-        const colorNames = {
-            void: 'Void Black',
-            titanium: 'Titanium Silver',
-            gold: 'Titanium Gold',
-            cyan: 'Hologram Cyan'
-        };
-
-        const packagePrices = {
-            standard: 0,
-            premium: 45000,
-            elite: 120000
-        };
-
-        const packageNames = {
-            standard: 'Standard',
-            premium: 'Premium',
-            elite: 'Elite'
-        };
-
-        const addonPrices = {
-            navigation: 25000,
-            hibernation: 180000,
-            'extended-fuel': 35000,
-            defense: 55000
-        };
-
-        let currentShip = 'voyager';
-        let currentColor = 'void';
-        let currentPackage = 'standard';
-        let selectedAddons = ['navigation'];
-
-        function updateConfigureShip(ship) {
-            currentShip = ship;
-            document.getElementById('configure-ship-svg').innerHTML = shipData[ship].svg;
-            document.getElementById('summary-ship-name').textContent = shipData[ship].name;
-            updateSummary();
+        function formatPrice(n) {
+            return '$' + n.toLocaleString();
         }
 
         function updateSummary() {
-            const base = shipData[currentShip].base;
-            const packagePrice = packagePrices[currentPackage];
-            const addonTotal = selectedAddons.reduce((sum, addon) => sum + addonPrices[addon], 0);
-            const total = base + packagePrice + addonTotal;
-
-            document.getElementById('summary-base').textContent = '$' + base.toLocaleString();
-            document.getElementById('summary-color').textContent = colorNames[currentColor];
-            document.getElementById('summary-package').textContent = packageNames[currentPackage] + (packagePrice > 0 ? ` (+$${packagePrice.toLocaleString()})` : '');
-            document.getElementById('summary-addons').textContent = selectedAddons.length > 0 ? `+$${addonTotal.toLocaleString()}` : '$0';
-            document.getElementById('summary-total').textContent = '$' + total.toLocaleString();
+            document.getElementById('sumShip').textContent = config.ship;
+            document.getElementById('sumBase').textContent = formatPrice(config.basePrice);
+            document.getElementById('sumColor').textContent = config.color;
+            document.getElementById('sumColorPrice').textContent = config.colorPrice > 0 ? '+$' + config.colorPrice.toLocaleString() : '$0';
+            document.getElementById('sumInterior').textContent = config.interior;
+            document.getElementById('sumInteriorPrice').textContent = config.interiorPrice > 0 ? '+$' + config.interiorPrice.toLocaleString() : '$0';
+            const addonNames = config.addons.length ? config.addons.map(a => a.name).join(', ') : 'None';
+            const addonTotal = config.addons.reduce((s, a) => s + a.price, 0);
+            document.getElementById('sumAddons').textContent = addonTotal > 0 ? '+$' + addonTotal.toLocaleString() : 'None';
+            const total = config.basePrice + config.colorPrice + config.interiorPrice + addonTotal;
+            document.getElementById('sumTotal').textContent = formatPrice(total);
         }
 
-        // Ship tab selection
-        document.querySelectorAll('.configure-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.configure-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                updateConfigureShip(tab.dataset.shipTab);
+        // Ship selection
+        document.querySelectorAll('.ship-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.ship-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                config.ship = opt.dataset.ship;
+                config.basePrice = parseInt(opt.dataset.price);
+                updateSummary();
             });
         });
 
         // Color selection
-        document.querySelectorAll('.color-swatch').forEach(swatch => {
-            swatch.addEventListener('click', () => {
-                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-                swatch.classList.add('selected');
-                currentColor = swatch.dataset.color;
+        document.querySelectorAll('.swatch').forEach(sw => {
+            sw.addEventListener('click', () => {
+                document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+                sw.classList.add('selected');
+                config.color = sw.dataset.color;
+                config.colorPrice = parseInt(sw.dataset.price);
                 updateSummary();
             });
         });
 
-        // Package selection
-        document.querySelectorAll('.package-option').forEach(option => {
-            option.addEventListener('click', () => {
-                document.querySelectorAll('.package-option').forEach(o => o.classList.remove('selected'));
-                option.classList.add('selected');
-                currentPackage = option.querySelector('input').value;
+        // Interior packages
+        document.querySelectorAll('.pkg-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                config.interior = card.dataset.pkg;
+                config.interiorPrice = parseInt(card.dataset.price);
                 updateSummary();
             });
         });
 
-        // Addon selection
-        document.querySelectorAll('.addon-option').forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.querySelector('input').value;
-                option.classList.toggle('selected');
-
-                if (selectedAddons.includes(value)) {
-                    selectedAddons = selectedAddons.filter(a => a !== value);
+        // Add-ons
+        document.querySelectorAll('.addon-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('selected');
+                const name = item.dataset.addon;
+                const price = parseInt(item.dataset.price);
+                if (item.classList.contains('selected')) {
+                    config.addons.push({ name, price });
                 } else {
-                    selectedAddons.push(value);
+                    config.addons = config.addons.filter(a => a.name !== name);
                 }
                 updateSummary();
             });
         });
 
-        // Select ship from lineup
-        function selectShip(ship) {
-            document.getElementById('configure').scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => {
-                document.querySelectorAll('.configure-tab').forEach(tab => {
-                    tab.classList.toggle('active', tab.dataset.shipTab === ship);
-                });
-                updateConfigureShip(ship);
-            }, 500);
+        function submitQuote() {
+            const total = config.basePrice + config.colorPrice + config.interiorPrice + config.addons.reduce((s,a) => s + a.price, 0);
+            const addonList = config.addons.length ? config.addons.map(a => a.name).join(', ') : 'None';
+            alert(`Quote Request Submitted!\n\nShip: ${config.ship}\nColor: ${config.color}\nInterior: ${config.interior}\nAdd-ons: ${addonList}\n\nEstimated Total: ${formatPrice(total)}\n\nOur team will contact you within 24 hours.`);
         }
-
-        // Reserve button
-        document.querySelector('.summary-cta').addEventListener('click', () => {
-            const total = document.getElementById('summary-total').textContent;
-            const ship = document.getElementById('summary-ship-name').textContent;
-            alert(`Reservation initiated for ${ship}\n\nEstimated Total: ${total}\n\nAethercraft representatives will contact you within 48 hours to discuss your order.`);
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
     </script>
 </body>
 </html>
